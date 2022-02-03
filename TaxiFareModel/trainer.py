@@ -13,7 +13,7 @@ from mlflow.tracking import MlflowClient
 
 
 class Trainer():
-    def __init__(self, X, y):
+    def __init__(self, X, y, experiment_name):
         """
             X: pandas DataFrame
             y: pandas Series
@@ -22,7 +22,7 @@ class Trainer():
         self.X = X
         self.y = y
         self.MLFLOW_URI = "https://mlflow.lewagon.co/"
-        self.EXPERIMENT_NAME = "[UK] [London] [geowilso] TaxiFareModel V1"
+        self.experiment_name = "[UK] [London] [geowilso] TaxiFareModel V1"
 
 
     def set_pipeline(self):
@@ -53,14 +53,15 @@ class Trainer():
         rmse = compute_rmse(y_pred, y_test)
         return rmse
 
-
+    @memoized_property
     def mlflow_client(self):
         mlflow.set_tracking_uri(self.MLFLOW_URI)
         return MlflowClient()
 
+    @memoized_property
     def mlflow_experiment_id(self):
         try:
-            return self.mlflow_client.create_experiment(self.EXPERIMENT_NAME)
+            return self.mlflow_client.create_experiment(self.experiment_name)
         except BaseException:
             return self.mlflow_client.get_experiment_by_name(
                 self.EXPERIMENT_NAME).experiment_id
