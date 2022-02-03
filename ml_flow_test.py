@@ -11,8 +11,7 @@ client = MlflowClient()
 try:
     experiment_id = client.create_experiment(EXPERIMENT_NAME)
 except BaseException:
-    experiment_id = client.get_experiment_by_name(
-        EXPERIMENT_NAME).experiment_id
+    experiment_id = client.get_experiment_by_name(EXPERIMENT_NAME).experiment_id
 
 yourname = 'George'
 
