@@ -22,7 +22,7 @@ class Trainer():
         self.X = X
         self.y = y
         self.MLFLOW_URI = "https://mlflow.lewagon.co/"
-        self.experiment_name = "[UK] [London] [geowilso] TaxiFareModel V1"
+        self.experiment_name = "[UK] [London] [geowilso] TaxiFareModel 1"
 
 
     def set_pipeline(self):
