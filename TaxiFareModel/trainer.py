@@ -8,7 +8,8 @@ from TaxiFareModel.encoders import TimeFeaturesEncoder, DistanceTransformer
 from sklearn.model_selection import train_test_split
 import pandas as pd
 from memoized_property import memoized_property
-
+import mlflow
+from mlflow.tracking import MlflowClient
 
 
 class Trainer():
@@ -20,6 +21,9 @@ class Trainer():
         self.pipeline = None
         self.X = X
         self.y = y
+        self.MLFLOW_URI = "https://mlflow.lewagon.co/"
+        self.EXPERIMENT_NAME = "[UK] [London] [geowilso] TaxiFareModel V1"
+
 
     def set_pipeline(self):
         """defines the pipeline as a class attribute"""
@@ -51,15 +55,15 @@ class Trainer():
 
 
     def mlflow_client(self):
-        mlflow.set_tracking_uri(MLFLOW_URI)
+        mlflow.set_tracking_uri(self.MLFLOW_URI)
         return MlflowClient()
 
     def mlflow_experiment_id(self):
         try:
-            return self.mlflow_client.create_experiment(self.experiment_name)
+            return self.mlflow_client.create_experiment(self.EXPERIMENT_NAME)
         except BaseException:
             return self.mlflow_client.get_experiment_by_name(
-                self.experiment_name).experiment_id
+                self.EXPERIMENT_NAME).experiment_id
 
     def mlflow_run(self):
         return self.mlflow_client.create_run(self.mlflow_experiment_id)
